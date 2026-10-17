@@ -1,36 +1,73 @@
 /* Cortex – Obsidian theme by BZi Studio
-   Companion theme for the Cortex Graph plugin: deep space, violet glow, glass surfaces.
-   MIT License */
+   Companion theme for the Cortex Graph plugin: deep space, glowing accent, glass surfaces.
+   https://github.com/LowKI2/obsidian-cortex-theme – MIT License */
 
 /* @settings
 name: Cortex
 id: cortex-theme
 settings:
   -
-    id: cortex-nebula
-    title: Nebula glow in the background
-    description: Soft violet and cyan light behind the workspace
-    type: class-toggle
-    default: true
+    id: cortex-color
+    title: Color variant
+    description: Accent color of the theme (Cortex Graph picks it up as well)
+    type: class-select
+    allowEmpty: false
+    default: cortex-violet
+    options:
+      -
+        label: Violet
+        value: cortex-violet
+      -
+        label: Cyan
+        value: cortex-cyan
+      -
+        label: Amber
+        value: cortex-amber
+      -
+        label: Emerald
+        value: cortex-emerald
   -
-    id: cortex-heading-glow
-    title: Glowing headings
+    id: cortex-no-stars
+    title: Hide starfield
+    description: Stars behind the sidebars (dark mode)
     type: class-toggle
-    default: true
+    default: false
   -
-    id: cortex-rainbow-headings
-    title: Heading colors from violet to cyan
+    id: cortex-stars-motion
+    title: Drifting stars
+    description: The starfield moves very slowly
     type: class-toggle
-    default: true
+    default: false
+  -
+    id: cortex-no-nebula
+    title: Hide nebula glow
+    type: class-toggle
+    default: false
+  -
+    id: cortex-no-heading-glow
+    title: No glow on headings
+    type: class-toggle
+    default: false
+  -
+    id: cortex-no-rainbow-headings
+    title: Plain heading colors (no gradient)
+    type: class-toggle
+    default: false
+  -
+    id: cortex-no-alt-checkboxes
+    title: Disable extra checkbox types
+    description: "[>] [<] [!] [?] [/] [-] [*] [i] [I] [b]"
+    type: class-toggle
+    default: false
 */
 
-/* ------------------------------------------------------------------ base */
+/* ================================================================== base */
 body {
-  --cortex-violet: #a882ff;
   --cortex-cyan: #42c5f5;
   --cortex-amber: #f5c542;
   --cortex-rose: #ff6b9a;
   --cortex-green: #5ee6a8;
+  --cortex-red: #ff4d5e;
 
   --font-text-theme: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-interface-theme: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -54,13 +91,58 @@ body {
   --cortex-ease: cubic-bezier(.2, .7, .2, 1);
 }
 
-/* ------------------------------------------------------------------ dark: deep space */
+/* ================================================================== color variants
+   Every accent-dependent value is derived from these five variables:
+   --cortex-accent      main accent (hex)
+   --cortex-accent-rgb  same as "r, g, b" for rgba()
+   --cortex-accent-text accent used for text/links
+   --cortex-accent-hi   brighter/stronger accent (hover, h1)
+   --cortex-accent-2    partner color (end of the heading gradient)
+   Cortex Graph reads --cortex-accent, --cortex-accent-rgb and --cortex-space-bg. */
+.theme-dark, .theme-dark.cortex-violet {
+  --accent-h: 258; --accent-s: 100%; --accent-l: 75%;
+  --cortex-accent: #a882ff; --cortex-accent-rgb: 168, 130, 255;
+  --cortex-accent-text: #b99aff; --cortex-accent-hi: #d2bfff; --cortex-accent-2: #42c5f5;
+}
+.theme-dark.cortex-cyan {
+  --accent-h: 196; --accent-s: 90%; --accent-l: 61%;
+  --cortex-accent: #42c5f5; --cortex-accent-rgb: 66, 197, 245;
+  --cortex-accent-text: #6fd3f7; --cortex-accent-hi: #a5e6fb; --cortex-accent-2: #a882ff;
+}
+.theme-dark.cortex-amber {
+  --accent-h: 40; --accent-s: 90%; --accent-l: 61%;
+  --cortex-accent: #f5b942; --cortex-accent-rgb: 245, 185, 66;
+  --cortex-accent-text: #f7c766; --cortex-accent-hi: #fbdc9c; --cortex-accent-2: #ff6b9a;
+}
+.theme-dark.cortex-emerald {
+  --accent-h: 153; --accent-s: 70%; --accent-l: 59%;
+  --cortex-accent: #4fe0a0; --cortex-accent-rgb: 79, 224, 160;
+  --cortex-accent-text: #6fe6b2; --cortex-accent-hi: #a6f1cf; --cortex-accent-2: #42c5f5;
+}
+.theme-light, .theme-light.cortex-violet {
+  --accent-h: 256; --accent-s: 100%; --accent-l: 65%;
+  --cortex-accent: #7c4dff; --cortex-accent-rgb: 124, 77, 255;
+  --cortex-accent-text: #6a3cf0; --cortex-accent-hi: #5428d8; --cortex-accent-2: #0a8bc2;
+}
+.theme-light.cortex-cyan {
+  --accent-h: 198; --accent-s: 90%; --accent-l: 40%;
+  --cortex-accent: #0a8bc2; --cortex-accent-rgb: 10, 139, 194;
+  --cortex-accent-text: #08779f; --cortex-accent-hi: #065f80; --cortex-accent-2: #6a3cf0;
+}
+.theme-light.cortex-amber {
+  --accent-h: 41; --accent-s: 100%; --accent-l: 39%;
+  --cortex-accent: #c98a00; --cortex-accent-rgb: 201, 138, 0;
+  --cortex-accent-text: #a86f00; --cortex-accent-hi: #8a5a00; --cortex-accent-2: #c4306a;
+}
+.theme-light.cortex-emerald {
+  --accent-h: 157; --accent-s: 79%; --accent-l: 35%;
+  --cortex-accent: #13a06a; --cortex-accent-rgb: 19, 160, 106;
+  --cortex-accent-text: #0f8a5b; --cortex-accent-hi: #0b6e48; --cortex-accent-2: #0a8bc2;
+}
+
+/* ================================================================== dark: deep space */
 .theme-dark {
-  --accent-h: 258;
-  --accent-s: 100%;
-  --accent-l: 75%;
-  --cortex-accent: #a882ff;
-  --cortex-accent-rgb: 168, 130, 255;
+  --cortex-space-bg: #07070d;
 
   --color-base-00: #07070d;
   --color-base-05: #0a0a13;
@@ -79,11 +161,11 @@ body {
   --background-primary-alt: #0f0f1c;
   --background-secondary: #08080f;
   --background-secondary-alt: #0d0d18;
-  --background-modifier-border: rgba(168, 130, 255, 0.14);
-  --background-modifier-border-hover: rgba(168, 130, 255, 0.28);
-  --background-modifier-border-focus: rgba(168, 130, 255, 0.5);
-  --background-modifier-hover: rgba(168, 130, 255, 0.08);
-  --background-modifier-active-hover: rgba(168, 130, 255, 0.16);
+  --background-modifier-border: rgba(var(--cortex-accent-rgb), 0.14);
+  --background-modifier-border-hover: rgba(var(--cortex-accent-rgb), 0.28);
+  --background-modifier-border-focus: rgba(var(--cortex-accent-rgb), 0.5);
+  --background-modifier-hover: rgba(var(--cortex-accent-rgb), 0.08);
+  --background-modifier-active-hover: rgba(var(--cortex-accent-rgb), 0.16);
   --background-modifier-form-field: rgba(14, 14, 26, 0.8);
   --background-modifier-error: #ff4d5e;
   --background-modifier-success: #5ee6a8;
@@ -92,9 +174,7 @@ body {
   --text-muted: #9c9abb;
   --text-faint: #66648a;
   --text-on-accent: #0b0b15;
-  --text-accent: #b99aff;
-  --text-accent-hover: #d2bfff;
-  --text-selection: rgba(168, 130, 255, 0.28);
+  --text-selection: rgba(var(--cortex-accent-rgb), 0.28);
   --text-highlight-bg: rgba(245, 197, 66, 0.22);
   --text-error: #ff6b78;
   --text-success: #5ee6a8;
@@ -102,19 +182,18 @@ body {
 
   --interactive-normal: #161628;
   --interactive-hover: #1e1e34;
-  --interactive-accent: var(--cortex-accent);
-  --interactive-accent-hover: #bfa3ff;
 
   --cortex-glass: rgba(14, 14, 26, 0.74);
-  --cortex-glow: 0 0 18px rgba(168, 130, 255, 0.35);
-  --cortex-glow-soft: 0 0 10px rgba(168, 130, 255, 0.2);
-  --cortex-shadow: 0 10px 34px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(168, 130, 255, 0.12);
+  --cortex-glow: 0 0 18px rgba(var(--cortex-accent-rgb), 0.35);
+  --cortex-glow-soft: 0 0 10px rgba(var(--cortex-accent-rgb), 0.2);
+  --cortex-shadow: 0 10px 34px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(var(--cortex-accent-rgb), 0.12);
+  --cortex-star: 255, 255, 255;
 
   --code-background: #0f0f1d;
   --code-normal: #d8d6f0;
   --code-comment: #6b6990;
   --code-function: #42c5f5;
-  --code-keyword: #b99aff;
+  --code-keyword: var(--cortex-accent-text);
   --code-important: #ff8c42;
   --code-operator: #ff6b9a;
   --code-property: #7fd6ff;
@@ -123,60 +202,54 @@ body {
   --code-tag: #ff6b9a;
   --code-value: #f5c542;
 
-  --graph-line: rgba(168, 130, 255, 0.22);
-  --graph-node: #b99aff;
   --graph-node-focused: #ffffff;
   --graph-node-unresolved: #ff4d5e;
   --graph-node-tag: #42c5f5;
   --graph-node-attachment: #f5c542;
   --graph-text: #e8e6ff;
 
-  --scrollbar-thumb-bg: rgba(168, 130, 255, 0.18);
-  --scrollbar-active-thumb-bg: rgba(168, 130, 255, 0.4);
   --scrollbar-bg: transparent;
 }
 
-/* ------------------------------------------------------------------ light: lavender daylight */
+/* ================================================================== light: daylight */
 .theme-light {
-  --accent-h: 256;
-  --accent-s: 100%;
-  --accent-l: 65%;
-  --cortex-accent: #7c4dff;
-  --cortex-accent-rgb: 124, 77, 255;
+  --cortex-space-bg: #0a0a14;   /* the graph's space mode stays dark */
 
   --background-primary: #fbfaff;
   --background-primary-alt: #f4f2fd;
   --background-secondary: #f1eefb;
   --background-secondary-alt: #e9e5f8;
-  --background-modifier-border: rgba(124, 77, 255, 0.16);
-  --background-modifier-border-hover: rgba(124, 77, 255, 0.3);
-  --background-modifier-border-focus: rgba(124, 77, 255, 0.55);
-  --background-modifier-hover: rgba(124, 77, 255, 0.07);
-  --background-modifier-active-hover: rgba(124, 77, 255, 0.14);
+  --background-modifier-border: rgba(var(--cortex-accent-rgb), 0.16);
+  --background-modifier-border-hover: rgba(var(--cortex-accent-rgb), 0.3);
+  --background-modifier-border-focus: rgba(var(--cortex-accent-rgb), 0.55);
+  --background-modifier-hover: rgba(var(--cortex-accent-rgb), 0.07);
+  --background-modifier-active-hover: rgba(var(--cortex-accent-rgb), 0.14);
   --background-modifier-form-field: #ffffff;
 
   --text-normal: #23213a;
   --text-muted: #5f5c80;
   --text-faint: #9a97b8;
   --text-on-accent: #ffffff;
-  --text-accent: #6a3cf0;
-  --text-accent-hover: #5428d8;
-  --text-selection: rgba(124, 77, 255, 0.18);
+  --text-selection: rgba(var(--cortex-accent-rgb), 0.18);
   --text-highlight-bg: rgba(245, 197, 66, 0.35);
 
-  --interactive-accent: var(--cortex-accent);
-  --interactive-accent-hover: #6a3cf0;
-
   --cortex-glass: rgba(255, 255, 255, 0.78);
-  --cortex-glow: 0 0 16px rgba(124, 77, 255, 0.18);
-  --cortex-glow-soft: 0 0 8px rgba(124, 77, 255, 0.12);
-  --cortex-shadow: 0 10px 30px rgba(60, 40, 120, 0.12), 0 0 0 1px rgba(124, 77, 255, 0.12);
+  --cortex-glow: 0 0 16px rgba(var(--cortex-accent-rgb), 0.18);
+  --cortex-glow-soft: 0 0 8px rgba(var(--cortex-accent-rgb), 0.12);
+  --cortex-shadow: 0 10px 30px rgba(60, 40, 120, 0.12), 0 0 0 1px rgba(var(--cortex-accent-rgb), 0.12);
+  --cortex-star: 90, 70, 160;
+
+  --cortex-cyan: #0a8bc2;
+  --cortex-amber: #c08a00;
+  --cortex-rose: #c4306a;
+  --cortex-green: #138a5b;
+  --cortex-red: #e0364a;
 
   --code-background: #f3f0fd;
   --code-normal: #2b2944;
   --code-comment: #8f8cad;
   --code-function: #0a8bc2;
-  --code-keyword: #6a3cf0;
+  --code-keyword: var(--cortex-accent-text);
   --code-important: #d4631c;
   --code-operator: #c4306a;
   --code-property: #1a74b0;
@@ -185,24 +258,24 @@ body {
   --code-tag: #c4306a;
   --code-value: #a87700;
 
-  --graph-line: rgba(124, 77, 255, 0.22);
-  --graph-node: #7c4dff;
   --graph-node-focused: #23213a;
   --graph-node-unresolved: #e0364a;
   --graph-node-tag: #0a8bc2;
   --graph-node-attachment: #c08a00;
   --graph-text: #23213a;
-
-  --scrollbar-thumb-bg: rgba(124, 77, 255, 0.2);
-  --scrollbar-active-thumb-bg: rgba(124, 77, 255, 0.4);
 }
 
+/* ================================================================== derived from the accent (both modes) */
 .theme-dark, .theme-light {
+  --text-accent: var(--cortex-accent-text);
+  --text-accent-hover: var(--cortex-accent-hi);
   --interactive-accent: var(--cortex-accent);
+  --interactive-accent-hover: var(--cortex-accent-hi);
+
   --link-color: var(--text-accent);
   --link-color-hover: var(--text-accent-hover);
-  --link-external-color: var(--cortex-cyan);
-  --link-external-color-hover: #7fd6ff;
+  --link-external-color: var(--cortex-accent-2);
+  --link-external-color-hover: var(--cortex-accent-2);
   --link-unresolved-color: var(--text-accent);
   --link-unresolved-opacity: 0.55;
   --link-unresolved-decoration-color: rgba(var(--cortex-accent-rgb), 0.35);
@@ -220,7 +293,7 @@ body {
   --blockquote-border-color: var(--cortex-accent);
   --blockquote-border-thickness: 3px;
   --checkbox-color: var(--cortex-accent);
-  --checkbox-color-hover: var(--interactive-accent-hover);
+  --checkbox-color-hover: var(--cortex-accent-hi);
   --checkbox-border-color: rgba(var(--cortex-accent-rgb), 0.5);
   --checkbox-radius: 5px;
 
@@ -242,59 +315,122 @@ body {
 
   --prompt-border-color: rgba(var(--cortex-accent-rgb), 0.3);
   --modal-border-color: rgba(var(--cortex-accent-rgb), 0.25);
+
+  --graph-line: rgba(var(--cortex-accent-rgb), 0.22);
+  --graph-node: var(--cortex-accent-text);
+
+  --scrollbar-thumb-bg: rgba(var(--cortex-accent-rgb), 0.18);
+  --scrollbar-active-thumb-bg: rgba(var(--cortex-accent-rgb), 0.4);
 }
 
-/* ------------------------------------------------------------------ nebula background */
-.cortex-nebula.theme-dark .workspace {
+/* ================================================================== nebula + starfield behind the workspace */
+body:not(.cortex-no-nebula).theme-dark .workspace {
   background:
-    radial-gradient(1200px 700px at 8% -10%, rgba(168, 130, 255, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 105% 110%, rgba(66, 197, 245, 0.07), transparent 60%),
+    radial-gradient(1200px 700px at 8% -10%, rgba(var(--cortex-accent-rgb), 0.10), transparent 60%),
+    radial-gradient(900px 600px at 105% 110%, color-mix(in srgb, var(--cortex-accent-2) 7%, transparent), transparent 60%),
     var(--background-secondary);
 }
-.cortex-nebula.theme-light .workspace {
+body:not(.cortex-no-nebula).theme-light .workspace {
   background:
-    radial-gradient(1200px 700px at 8% -10%, rgba(124, 77, 255, 0.07), transparent 60%),
-    radial-gradient(900px 600px at 105% 110%, rgba(10, 139, 194, 0.05), transparent 60%),
+    radial-gradient(1200px 700px at 8% -10%, rgba(var(--cortex-accent-rgb), 0.07), transparent 60%),
+    radial-gradient(900px 600px at 105% 110%, color-mix(in srgb, var(--cortex-accent-2) 5%, transparent), transparent 60%),
     var(--background-secondary);
 }
-.cortex-nebula .workspace-split.mod-left-split .workspace-tabs .workspace-leaf,
-.cortex-nebula .workspace-split.mod-right-split .workspace-tabs .workspace-leaf,
-.cortex-nebula .workspace-ribbon,
-.cortex-nebula .workspace-tab-header-container,
-.cortex-nebula .mod-left-split .workspace-tab-header-container,
-.cortex-nebula .titlebar,
-.cortex-nebula .status-bar {
-  background-color: transparent;
-}
-.cortex-nebula .workspace-split.mod-left-split .workspace-leaf-content,
-.cortex-nebula .workspace-split.mod-right-split .workspace-leaf-content {
+
+/* sidebars, ribbon, tab bars and status bar become see-through so nebula and stars show */
+body:not(.cortex-no-nebula) .workspace-split.mod-left-split .workspace-tabs .workspace-leaf,
+body:not(.cortex-no-nebula) .workspace-split.mod-right-split .workspace-tabs .workspace-leaf,
+body:not(.cortex-no-nebula) .workspace-split.mod-left-split .workspace-leaf-content,
+body:not(.cortex-no-nebula) .workspace-split.mod-right-split .workspace-leaf-content,
+body:not(.cortex-no-nebula) .workspace-ribbon,
+body:not(.cortex-no-nebula) .workspace-tab-header-container,
+body:not(.cortex-no-nebula) .titlebar,
+body:not(.cortex-no-nebula) .status-bar,
+body:not(.cortex-no-stars).theme-dark .workspace-split.mod-left-split .workspace-tabs .workspace-leaf,
+body:not(.cortex-no-stars).theme-dark .workspace-split.mod-right-split .workspace-tabs .workspace-leaf,
+body:not(.cortex-no-stars).theme-dark .workspace-split.mod-left-split .workspace-leaf-content,
+body:not(.cortex-no-stars).theme-dark .workspace-split.mod-right-split .workspace-leaf-content,
+body:not(.cortex-no-stars).theme-dark .workspace-ribbon,
+body:not(.cortex-no-stars).theme-dark .workspace-tab-header-container,
+body:not(.cortex-no-stars).theme-dark .status-bar {
   background-color: transparent;
 }
 
-/* main editor area: a slightly lighter pane floating in space */
-.workspace-split.mod-root {
-  background-color: var(--background-primary);
+/* starfield: three tiled layers of tiny dots, painted once (no images, no scripts) */
+body:not(.cortex-no-stars).theme-dark .workspace { position: relative; isolation: isolate; overflow: hidden; }
+body:not(.cortex-no-stars).theme-dark .workspace::before {
+  content: '';
+  position: absolute;
+  inset: -600px 0 0 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image:
+    radial-gradient(1.4px 1.4px at 23px 41px, rgba(var(--cortex-star), 0.9), transparent 60%),
+    radial-gradient(1.4px 1.4px at 141px 87px, rgba(var(--cortex-star), 0.6), transparent 60%),
+    radial-gradient(2px 2px at 211px 173px, rgba(var(--cortex-star), 0.85), transparent 60%),
+    radial-gradient(1.4px 1.4px at 77px 231px, rgba(var(--cortex-star), 0.5), transparent 60%),
+    radial-gradient(1.4px 1.4px at 263px 19px, rgba(var(--cortex-star), 0.7), transparent 60%),
+    radial-gradient(1.4px 1.4px at 37px 283px, rgba(var(--cortex-accent-rgb), 0.9), transparent 60%),
+    radial-gradient(2px 2px at 173px 251px, rgba(var(--cortex-accent-rgb), 0.7), transparent 60%),
+    radial-gradient(1.4px 1.4px at 113px 157px, rgba(var(--cortex-star), 0.45), transparent 60%),
+    radial-gradient(1.4px 1.4px at 59px 109px, rgba(var(--cortex-star), 0.35), transparent 60%),
+    radial-gradient(1.4px 1.4px at 241px 113px, rgba(var(--cortex-star), 0.4), transparent 60%),
+    radial-gradient(1.4px 1.4px at 289px 209px, rgba(var(--cortex-star), 0.6), transparent 60%),
+    radial-gradient(1.4px 1.4px at 7px 167px, rgba(var(--cortex-star), 0.55), transparent 60%),
+    radial-gradient(2px 2px at 131px 293px, rgba(var(--cortex-star), 0.75), transparent 60%),
+    radial-gradient(1.4px 1.4px at 199px 59px, rgba(var(--cortex-accent-rgb), 0.6), transparent 60%);
+  background-size: 300px 300px;
 }
+body:not(.cortex-no-stars).theme-dark .workspace::after {
+  content: '';
+  position: absolute;
+  inset: -600px 0 0 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.7;
+  background-image:
+    radial-gradient(1.4px 1.4px at 67px 13px, rgba(var(--cortex-star), 0.8), transparent 60%),
+    radial-gradient(1.4px 1.4px at 311px 199px, rgba(var(--cortex-star), 0.7), transparent 60%),
+    radial-gradient(2.4px 2.4px at 409px 61px, rgba(var(--cortex-star), 0.9), transparent 60%),
+    radial-gradient(1.4px 1.4px at 157px 367px, rgba(var(--cortex-star), 0.6), transparent 60%),
+    radial-gradient(2px 2px at 443px 409px, color-mix(in srgb, var(--cortex-accent-2) 90%, transparent), transparent 60%),
+    radial-gradient(1.4px 1.4px at 233px 461px, rgba(var(--cortex-star), 0.5), transparent 60%);
+  background-size: 480px 480px;
+}
+body.cortex-stars-motion:not(.cortex-no-stars).theme-dark .workspace::before { animation: cortex-drift 240s linear infinite; will-change: transform; }
+body.cortex-stars-motion:not(.cortex-no-stars).theme-dark .workspace::after { animation: cortex-drift-far 420s linear infinite; will-change: transform; }
+@keyframes cortex-drift { from { transform: translateY(0); } to { transform: translateY(600px); } }
+@keyframes cortex-drift-far { from { transform: translateY(0); } to { transform: translateY(480px); } }
+
+/* the main editor area: an opaque pane floating in space */
+.workspace-split.mod-root,
 .workspace-split.mod-root .workspace-tabs .workspace-leaf {
   background-color: var(--background-primary);
 }
 
-/* ------------------------------------------------------------------ headings */
+/* ================================================================== headings */
 .markdown-rendered h1, .HyperMD-header-1,
 .markdown-rendered h2, .HyperMD-header-2,
 .markdown-rendered h3, .HyperMD-header-3 { line-height: 1.25; }
 
-.cortex-rainbow-headings.theme-dark { --h1-color: #d2bfff; --h2-color: #b99aff; --h3-color: #9fb4ff; --h4-color: #86c8ff; --h5-color: #7fd6ff; --h6-color: #9c9abb; }
-.cortex-rainbow-headings.theme-light { --h1-color: #5428d8; --h2-color: #6a3cf0; --h3-color: #4a5ae0; --h4-color: #2c6fd0; --h5-color: #0a8bc2; --h6-color: #5f5c80; }
-
-.cortex-heading-glow.theme-dark .markdown-rendered h1,
-.cortex-heading-glow.theme-dark .HyperMD-header-1 .cm-header,
-.cortex-heading-glow.theme-dark .inline-title {
-  text-shadow: 0 0 22px rgba(168, 130, 255, 0.45);
+body:not(.cortex-no-rainbow-headings) {
+  --h1-color: var(--cortex-accent-hi);
+  --h2-color: var(--cortex-accent-text);
+  --h3-color: color-mix(in srgb, var(--cortex-accent-text) 66%, var(--cortex-accent-2));
+  --h4-color: color-mix(in srgb, var(--cortex-accent-text) 33%, var(--cortex-accent-2));
+  --h5-color: var(--cortex-accent-2);
+  --h6-color: var(--text-muted);
 }
-.cortex-heading-glow.theme-dark .markdown-rendered h2,
-.cortex-heading-glow.theme-dark .HyperMD-header-2 .cm-header {
-  text-shadow: 0 0 16px rgba(168, 130, 255, 0.3);
+
+body:not(.cortex-no-heading-glow).theme-dark .markdown-rendered h1,
+body:not(.cortex-no-heading-glow).theme-dark .HyperMD-header-1 .cm-header,
+body:not(.cortex-no-heading-glow).theme-dark .inline-title {
+  text-shadow: 0 0 22px rgba(var(--cortex-accent-rgb), 0.45);
+}
+body:not(.cortex-no-heading-glow).theme-dark .markdown-rendered h2,
+body:not(.cortex-no-heading-glow).theme-dark .HyperMD-header-2 .cm-header {
+  text-shadow: 0 0 16px rgba(var(--cortex-accent-rgb), 0.3);
 }
 .markdown-rendered h2 {
   padding-bottom: 0.25em;
@@ -302,7 +438,7 @@ body {
 }
 .inline-title { color: var(--h1-color, var(--text-normal)); letter-spacing: -0.015em; }
 
-/* ------------------------------------------------------------------ links: a node lighting up */
+/* ================================================================== links: a node lighting up */
 .markdown-rendered .internal-link,
 .cm-s-obsidian .cm-hmd-internal-link .cm-underline {
   text-decoration-color: rgba(var(--cortex-accent-rgb), 0.35);
@@ -311,10 +447,10 @@ body {
 }
 .theme-dark .markdown-rendered .internal-link:hover,
 .theme-dark .cm-s-obsidian .cm-hmd-internal-link:hover {
-  text-shadow: 0 0 10px rgba(168, 130, 255, 0.7);
+  text-shadow: 0 0 10px rgba(var(--cortex-accent-rgb), 0.7);
 }
 
-/* ------------------------------------------------------------------ text details */
+/* ================================================================== text details */
 .markdown-rendered blockquote {
   background: linear-gradient(90deg, rgba(var(--cortex-accent-rgb), 0.08), transparent 70%);
   border-radius: 0 var(--radius-m) var(--radius-m) 0;
@@ -323,7 +459,7 @@ body {
 .markdown-rendered hr {
   border: none;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(var(--cortex-accent-rgb), 0.5), rgba(66, 197, 245, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--cortex-accent-rgb), 0.5), color-mix(in srgb, var(--cortex-accent-2) 40%, transparent), transparent);
 }
 .markdown-rendered mark, .cm-highlight { border-radius: 3px; padding: 0 2px; }
 .markdown-rendered code, .cm-s-obsidian span.cm-inline-code {
@@ -337,28 +473,21 @@ body {
 .markdown-rendered table { border-radius: var(--radius-m); overflow: hidden; }
 .markdown-rendered th { color: var(--text-accent); font-weight: 600; }
 
-/* tags as small glowing pills */
 .theme-dark a.tag:hover, .theme-dark .cm-hashtag:hover { box-shadow: var(--cortex-glow-soft); }
-
-/* checkboxes */
 .markdown-rendered input[type=checkbox]:checked,
 .markdown-source-view input[type=checkbox]:checked { box-shadow: var(--cortex-glow-soft); }
 
-/* ------------------------------------------------------------------ tabs + navigation */
+/* ================================================================== tabs + navigation */
 .workspace-tab-header.is-active .workspace-tab-header-inner-title { color: var(--text-normal); }
-.mod-root .workspace-tab-header.is-active {
-  box-shadow: inset 0 -2px 0 var(--cortex-accent);
-}
+.mod-root .workspace-tab-header.is-active { box-shadow: inset 0 -2px 0 var(--cortex-accent); }
 .theme-dark .mod-root .workspace-tab-header.is-active {
-  box-shadow: inset 0 -2px 0 var(--cortex-accent), 0 6px 14px -8px rgba(168, 130, 255, 0.6);
+  box-shadow: inset 0 -2px 0 var(--cortex-accent), 0 6px 14px -8px rgba(var(--cortex-accent-rgb), 0.6);
 }
-.nav-file-title.is-active, .tree-item-self.is-active {
-  box-shadow: inset 2px 0 0 var(--cortex-accent);
-}
+.nav-file-title.is-active, .tree-item-self.is-active { box-shadow: inset 2px 0 0 var(--cortex-accent); }
 .side-dock-ribbon-action:hover, .clickable-icon:hover { color: var(--text-accent); }
-.theme-dark .side-dock-ribbon-action:hover svg { filter: drop-shadow(0 0 6px rgba(168, 130, 255, 0.7)); }
+.theme-dark .side-dock-ribbon-action:hover svg { filter: drop-shadow(0 0 6px rgba(var(--cortex-accent-rgb), 0.7)); }
 
-/* ------------------------------------------------------------------ glass surfaces (menus, modals, popovers) */
+/* ================================================================== glass surfaces */
 .menu, .suggestion-container, .modal, .prompt, .popover.hover-popover, .notice {
   background-color: var(--cortex-glass);
   backdrop-filter: blur(14px) saturate(1.2);
@@ -368,16 +497,14 @@ body {
 .modal, .prompt { border-radius: var(--radius-xl); }
 .menu { border-radius: var(--radius-l); }
 .menu-item.selected:not(.is-disabled):not(.is-label),
-.suggestion-item.is-selected {
-  background-color: rgba(var(--cortex-accent-rgb), 0.18);
-}
+.suggestion-item.is-selected { background-color: rgba(var(--cortex-accent-rgb), 0.18); }
 .theme-dark .suggestion-item.is-selected { box-shadow: inset 2px 0 0 var(--cortex-accent); }
 .modal-bg { background-color: rgba(4, 4, 10, 0.55); }
 .theme-light .modal-bg { background-color: rgba(40, 30, 80, 0.18); }
 
-/* ------------------------------------------------------------------ buttons + inputs */
+/* ================================================================== buttons + inputs */
 button.mod-cta {
-  background: linear-gradient(135deg, var(--cortex-accent), #8b6cff);
+  background: linear-gradient(135deg, var(--cortex-accent), color-mix(in srgb, var(--cortex-accent) 75%, var(--cortex-accent-2)));
   color: var(--text-on-accent);
 }
 .theme-dark button.mod-cta:hover { box-shadow: var(--cortex-glow); }
@@ -388,25 +515,271 @@ input[type=text]:focus, input[type=search]:focus, textarea:focus, select:focus {
 .theme-dark .checkbox-container.is-enabled { box-shadow: var(--cortex-glow-soft); }
 input[type=range]::-webkit-slider-thumb { background: var(--cortex-accent); }
 
-/* ------------------------------------------------------------------ status bar + scrollbars */
 .status-bar { border-top: 1px solid var(--background-modifier-border); color: var(--text-faint); }
 ::-webkit-scrollbar-thumb { border-radius: 999px; }
 
-/* ------------------------------------------------------------------ callouts in the Cortex palette */
-.callout[data-callout="note"], .callout[data-callout="info"] { --callout-color: 168, 130, 255; }
-.callout[data-callout="tip"], .callout[data-callout="hint"] { --callout-color: 66, 197, 245; }
-.callout[data-callout="success"], .callout[data-callout="check"], .callout[data-callout="done"] { --callout-color: 94, 230, 168; }
-.callout[data-callout="warning"], .callout[data-callout="caution"] { --callout-color: 245, 197, 66; }
-.callout[data-callout="danger"], .callout[data-callout="error"], .callout[data-callout="bug"] { --callout-color: 255, 77, 94; }
-.callout { border-radius: var(--radius-m); border: 1px solid rgba(var(--callout-color), 0.25); }
-.theme-light [data-callout="note"], .theme-light [data-callout="info"] { --callout-color: 124, 77, 255; }
+/* ================================================================== extra checkbox types
+   - [>] forwarded  - [<] scheduled  - [!] important  - [?] question  - [/] in progress
+   - [-] cancelled  - [*] star       - [i] info       - [I] idea      - [b] bookmark   */
+body:not(.cortex-no-alt-checkboxes) li[data-task]:not([data-task="x"]):not([data-task="X"]):not([data-task=" "]):not([data-task="-"]),
+body:not(.cortex-no-alt-checkboxes) .HyperMD-task-line[data-task]:not([data-task="x"]):not([data-task="X"]):not([data-task=" "]):not([data-task="-"]) {
+  --checklist-done-decoration: none;
+  --checklist-done-color: var(--text-normal);
+}
+body:not(.cortex-no-alt-checkboxes) li[data-task="-"],
+body:not(.cortex-no-alt-checkboxes) .HyperMD-task-line[data-task="-"] {
+  --checklist-done-decoration: line-through;
+  --checklist-done-color: var(--text-faint);
+}
+body:not(.cortex-no-alt-checkboxes) li[data-task="!"],
+body:not(.cortex-no-alt-checkboxes) .HyperMD-task-line[data-task="!"] { --checklist-done-color: var(--text-normal); font-weight: var(--font-semibold); }
 
-/* ------------------------------------------------------------------ Cortex Graph plugin: blend the view into the theme */
-.workspace-leaf-content[data-type="cortex-graph-view"] .cg-root:not(.is-space) {
-  background: var(--background-primary);
+/* [/] in progress: half filled, no icon */
+body:not(.cortex-no-alt-checkboxes) input[data-task="/"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="/"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="/"] > p > input:checked {
+  background: linear-gradient(135deg, var(--cortex-accent) 50%, transparent 50%);
+  border-color: var(--cortex-accent);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="/"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="/"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="/"] > p > input:checked::after { display: none; }
+
+/* [>] forwarded */
+body:not(.cortex-no-alt-checkboxes) input[data-task=">"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task=">"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task=">"] > p > input:checked {
+  --checkbox-color: var(--cortex-cyan);
+  --checkbox-color-hover: var(--cortex-cyan);
+  background-color: var(--cortex-cyan);
+  border-color: var(--cortex-cyan);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task=">"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task=">"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task=">"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [<] scheduled */
+body:not(.cortex-no-alt-checkboxes) input[data-task="<"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="<"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="<"] > p > input:checked {
+  --checkbox-color: var(--cortex-accent);
+  --checkbox-color-hover: var(--cortex-accent);
+  background-color: var(--cortex-accent);
+  border-color: var(--cortex-accent);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="<"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="<"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="<"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [!] important */
+body:not(.cortex-no-alt-checkboxes) input[data-task="!"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="!"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="!"] > p > input:checked {
+  --checkbox-color: var(--cortex-rose);
+  --checkbox-color-hover: var(--cortex-rose);
+  background-color: var(--cortex-rose);
+  border-color: var(--cortex-rose);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="!"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="!"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="!"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v9M12 19v.01'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v9M12 19v.01'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [?] question */
+body:not(.cortex-no-alt-checkboxes) input[data-task="?"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="?"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="?"] > p > input:checked {
+  --checkbox-color: var(--cortex-amber);
+  --checkbox-color-hover: var(--cortex-amber);
+  background-color: var(--cortex-amber);
+  border-color: var(--cortex-amber);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="?"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="?"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="?"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 9a3 3 0 1 1 4 2.8c-.6.3-1 .9-1 1.6V14M12 18v.01'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 9a3 3 0 1 1 4 2.8c-.6.3-1 .9-1 1.6V14M12 18v.01'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [-] cancelled */
+body:not(.cortex-no-alt-checkboxes) input[data-task="-"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="-"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="-"] > p > input:checked {
+  --checkbox-color: var(--text-faint);
+  --checkbox-color-hover: var(--text-faint);
+  background-color: var(--text-faint);
+  border-color: var(--text-faint);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="-"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="-"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="-"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [*] star */
+body:not(.cortex-no-alt-checkboxes) input[data-task="*"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="*"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="*"] > p > input:checked {
+  --checkbox-color: var(--cortex-amber);
+  --checkbox-color-hover: var(--cortex-amber);
+  background-color: var(--cortex-amber);
+  border-color: var(--cortex-amber);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="*"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="*"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="*"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='none'%3E%3Cpath d='M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.3l-5.8 3 1.1-6.4L2.6 9.3l6.5-.9z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black' stroke='none'%3E%3Cpath d='M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4L12 17.3l-5.8 3 1.1-6.4L2.6 9.3l6.5-.9z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [i] info */
+body:not(.cortex-no-alt-checkboxes) input[data-task="i"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="i"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="i"] > p > input:checked {
+  --checkbox-color: var(--cortex-cyan);
+  --checkbox-color-hover: var(--cortex-cyan);
+  background-color: var(--cortex-cyan);
+  border-color: var(--cortex-cyan);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="i"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="i"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="i"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 11v7M12 6.5v.01'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 11v7M12 6.5v.01'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [I] idea */
+body:not(.cortex-no-alt-checkboxes) input[data-task="I"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="I"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="I"] > p > input:checked {
+  --checkbox-color: var(--cortex-amber);
+  --checkbox-color-hover: var(--cortex-amber);
+  background-color: var(--cortex-amber);
+  border-color: var(--cortex-amber);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="I"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="I"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="I"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6V16h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6V16h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
+}
+/* [b] bookmark */
+body:not(.cortex-no-alt-checkboxes) input[data-task="b"]:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="b"] > input:checked,
+body:not(.cortex-no-alt-checkboxes) li[data-task="b"] > p > input:checked {
+  --checkbox-color: var(--cortex-accent);
+  --checkbox-color-hover: var(--cortex-accent);
+  background-color: var(--cortex-accent);
+  border-color: var(--cortex-accent);
+}
+body:not(.cortex-no-alt-checkboxes) input[data-task="b"]:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="b"] > input:checked::after,
+body:not(.cortex-no-alt-checkboxes) li[data-task="b"] > p > input:checked::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12v18l-6-4-6 4z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3h12v18l-6-4-6 4z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 70%;
+  mask-size: 70%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: var(--background-primary);
 }
 
-/* ------------------------------------------------------------------ calm motion */
+/* ================================================================== callouts in the Cortex palette */
+.callout[data-callout="note"], .callout[data-callout="info"] { --callout-color: var(--cortex-accent-rgb); }
+.theme-dark .callout[data-callout="tip"], .theme-dark .callout[data-callout="hint"] { --callout-color: 66, 197, 245; }
+.theme-dark .callout[data-callout="success"], .theme-dark .callout[data-callout="check"], .theme-dark .callout[data-callout="done"] { --callout-color: 94, 230, 168; }
+.theme-dark .callout[data-callout="warning"], .theme-dark .callout[data-callout="caution"] { --callout-color: 245, 197, 66; }
+.theme-dark .callout[data-callout="danger"], .theme-dark .callout[data-callout="error"], .theme-dark .callout[data-callout="bug"] { --callout-color: 255, 77, 94; }
+.callout { border-radius: var(--radius-m); border: 1px solid rgba(var(--callout-color), 0.25); }
+.theme-dark .callout { box-shadow: 0 0 18px -6px rgba(var(--callout-color), 0.35); }
+
+/* Cortex callouts:  > [!neuron]  > [!insight]  > [!synapse]  > [!signal] */
+.callout[data-callout="neuron"]  { --callout-color: var(--cortex-accent-rgb); --callout-icon: lucide-brain; }
+.callout[data-callout="insight"] { --callout-color: 245, 197, 66; --callout-icon: lucide-sparkles; }
+.callout[data-callout="synapse"] { --callout-color: 66, 197, 245; --callout-icon: lucide-git-merge; }
+.callout[data-callout="signal"]  { --callout-color: 255, 107, 154; --callout-icon: lucide-activity; }
+.theme-light .callout[data-callout="insight"] { --callout-color: 192, 138, 0; }
+.theme-light .callout[data-callout="synapse"] { --callout-color: 10, 139, 194; }
+.theme-light .callout[data-callout="signal"]  { --callout-color: 196, 48, 106; }
+.callout[data-callout="neuron"], .callout[data-callout="insight"], .callout[data-callout="synapse"], .callout[data-callout="signal"] {
+  background: linear-gradient(135deg, rgba(var(--callout-color), 0.13), rgba(var(--callout-color), 0.03) 70%);
+}
+.callout[data-callout="neuron"] .callout-title, .callout[data-callout="insight"] .callout-title,
+.callout[data-callout="synapse"] .callout-title, .callout[data-callout="signal"] .callout-title {
+  letter-spacing: 0.04em;
+}
+.theme-dark .callout[data-callout="neuron"] .callout-icon, .theme-dark .callout[data-callout="insight"] .callout-icon,
+.theme-dark .callout[data-callout="synapse"] .callout-icon, .theme-dark .callout[data-callout="signal"] .callout-icon {
+  filter: drop-shadow(0 0 6px rgba(var(--callout-color), 0.8));
+}
+
+/* ================================================================== Cortex Graph plugin
+   The plugin reads --cortex-accent, --cortex-accent-rgb and --cortex-space-bg (3.5.0+). */
+.workspace-leaf-content[data-type="cortex-graph-view"] .cg-root:not(.is-space) { background: var(--background-primary); }
+
+/* ================================================================== calm motion */
 @media (prefers-reduced-motion: reduce) {
   .markdown-rendered .internal-link, .cm-s-obsidian .cm-hmd-internal-link .cm-underline { transition: none; }
+  body.cortex-stars-motion:not(.cortex-no-stars).theme-dark .workspace::before,
+  body.cortex-stars-motion:not(.cortex-no-stars).theme-dark .workspace::after { animation: none; }
 }

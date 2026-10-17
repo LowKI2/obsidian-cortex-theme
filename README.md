@@ -5,22 +5,57 @@ Made as the companion theme for the [Cortex Graph](https://github.com/LowKI2/cor
 
 ## Features
 
-- **Dark: deep space** – near-black background with a faint violet/cyan nebula, violet accent
-- **Light: lavender daylight** – soft lavender white with a stronger violet accent
-- Headings in a violet → cyan gradient with a subtle glow
+- **Dark: deep space** – near-black background, faint nebula and starfield
+- **Light: daylight** – soft lavender white with a stronger accent
+- Headings as a color gradient with a subtle glow
 - Internal links light up on hover like a graph node
 - Glass menus, dialogs, popovers and command palette
 - Tags as small pills, callouts and code in the Cortex palette
 - Obsidian's core graph view uses the Cortex colors
 - Respects `prefers-reduced-motion`
 
+![Cortex](screenshot.png)
+
+## Color variants
+
+Violet (default), Cyan, Amber and Emerald – each in dark and light. Every accent color in the theme is derived from the variant.
+
+## Starfield
+
+A faint starfield behind the sidebars in dark mode, drawn with CSS only. Optional slow drift.
+
+## Extra checkbox types
+
+| Markdown | Meaning |
+|---|---|
+| `- [/]` | in progress |
+| `- [>]` | forwarded |
+| `- [<]` | scheduled |
+| `- [!]` | important |
+| `- [?]` | question |
+| `- [-]` | cancelled |
+| `- [*]` | star |
+| `- [i]` | info |
+| `- [I]` | idea |
+| `- [b]` | bookmark |
+
+## Cortex callouts
+
+```md
+> [!neuron] A thought with many connections
+> [!insight] Something you realised
+> [!synapse] A connection between two ideas
+> [!signal] Something that needs attention
+```
+
+## Works with Cortex Graph
+
+The theme publishes `--cortex-accent`, `--cortex-accent-rgb` and `--cortex-space-bg`.
+[Cortex Graph](https://github.com/LowKI2/cortex-graph) 3.5.0+ picks them up, so glow, labels and space background of the 3D graph follow the chosen variant.
+
 ## Options (Style Settings)
 
-With the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin you can switch off:
-
-- Nebula glow in the background
-- Glowing headings
-- Heading colors from violet to cyan
+With the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin you can choose the color variant and switch off starfield, nebula, heading glow, heading gradient or the extra checkboxes, or let the stars drift.
 
 ## Install
 
