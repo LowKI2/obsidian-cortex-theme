@@ -57,8 +57,11 @@ A faint starfield behind the sidebars in dark mode, drawn with CSS only. Optiona
 The theme publishes `--cortex-accent`, `--cortex-accent-rgb` and `--cortex-space-bg`.
 [Cortex Graph](https://github.com/LowKI2/cortex-graph) 3.5.0+ picks them up, so glow, labels and space background of the 3D graph follow the chosen variant.
 
-## Options (Style Settings)
+## Options
 
+**With Cortex Graph (3.5.0+):** all theme options – color variant, fonts, starfield, nebula, heading glow and gradient, extra checkboxes – are in the plugin settings under *Cortex theme*. No extra plugin needed.
+
+**Without the plugin:** 
 With the [Style Settings](https://github.com/mgmeyers/obsidian-style-settings) plugin you can choose the color variant and switch off starfield, nebula, heading glow, heading gradient or the extra checkboxes, or let the stars drift.
 
 ## Install
