@@ -1,7 +1,7 @@
 {
   "name": "Cortex",
-  "version": "1.2.0",
-  "minAppVersion": "1.4.0",
+  "version": "1.2.1",
+  "minAppVersion": "1.7.2",
   "author": "BZi Studio",
   "authorUrl": "https://github.com/LowKI2"
 }
