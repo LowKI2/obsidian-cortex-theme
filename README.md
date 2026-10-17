@@ -16,6 +16,10 @@ Made as the companion theme for the [Cortex Graph](https://github.com/LowKI2/cor
 
 ![Cortex](screenshot.png)
 
+## Fonts
+
+Built in, no internet needed: **Inter** for text and interface, **Space Grotesk** for headings (both variable, latin subset, SIL Open Font License – see `OFL.txt`). Via Style Settings you can switch the text to your system font or use the text font for headings too. Fonts set in Obsidian's own appearance settings still take priority.
+
 ## Color variants
 
 Violet (default), Cyan, Amber and Emerald – each in dark and light. Every accent color in the theme is derived from the variant.
